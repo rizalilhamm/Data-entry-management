@@ -5,11 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
+    <ul class="list-group">
         {% for post in posts %}
-            <li class="col-md-4">
+            <li class="list-group-item">
                 <a href="{{ url_for('detail_post', id=post.id) }}">{{ post }}</a>
-                <a href="{{ url_for('detail_post', id=post.id) }}">Detail</a>
             </li>
         {% endfor %}
     </ul>

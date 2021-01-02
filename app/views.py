@@ -1,6 +1,8 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from app import app, db
 from models import Post
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 @app.route('/dashboard/')
@@ -17,6 +19,7 @@ def add_post():
             post = Post(name=name, desc=desc)
             db.session.add(post)
             db.session.commit()
+            flash("Data Posted successfully!")
             return redirect('/dashboard')
     return render_template('add_post.html', title='Add New')
 
@@ -32,8 +35,8 @@ def edit_post(id):
         post.name = request.form['name']
         post.desc = request.form['desc']
         db.session.commit()
+        flash("Data Updated!")
         return redirect(url_for('detail_post', id=post.id))
-
     return render_template('edit_post.html', title='Edit Post', post=post)
 
 @app.route('/<int:id>/delete', methods=["POST", "GET"])
@@ -42,5 +45,6 @@ def delete_post(id):
     if request.method == "POST":
         db.session.delete(post)
         db.session.commit()
+        flash("Post deleted!")
         return redirect(url_for('index'))
     return render_template('confirm_delete.html', title='Delete Post', post=post)

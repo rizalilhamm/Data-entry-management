@@ -13,6 +13,7 @@
       {% endblock %}
     </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
 </head>
 <body>
   <div class="container">
@@ -33,6 +34,16 @@
           </div>
         </div>
       </nav>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="list-group">
+            {% for message in messages %}
+                <li class="list-group-item alert alert-success">{{ message }}</li>
+              </p>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
       {% block content %}
       {% endblock %}
     </div>
