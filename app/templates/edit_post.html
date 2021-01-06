@@ -8,11 +8,11 @@
         <form class="col-md-4 mx-auto" action="{{ url_for('edit_post', id=post.id) }}" method="POST">
             <div class="form-group mt-1">
               <label for="exampleFormControlInput1">New Name:</label>
-              <input name="name" type="text" class="form-control" id="exampleFormControlInput1" required>
+              <input name="name" type="text" class="form-control" id="exampleFormControlInput1" required value="{{ post.name }}">
             </div>
             <div class="form-group mt-1">
               <label for="exampleFormControlTextarea1">New Description:</label>
-              <textarea name="desc" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              <textarea name="desc" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ post.desc }}</textarea>
             </div>
             <p class="text-center mt-1">
               <a href="{{url_for('detail_post', id=post.id) }}">Cancel</a>
