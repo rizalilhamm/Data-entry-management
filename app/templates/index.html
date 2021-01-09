@@ -1,15 +1,1 @@
-{% extends 'base.html' %}
-
-{% block title %}
-    {{title}}
-{% endblock %}
-
-{% block content %}
-    <ul class="list-group">
-        {% for post in posts %}
-            <li class="list-group-item">
-                <a href="{{ url_for('detail_post', id=post.id) }}">{{ post }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+{% include 'content.html' %}

@@ -1,50 +1,78 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, flash, url_for
 from app import app, db
-from models import Post
-
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+from app.models import Entry
 
 @app.route('/')
-@app.route('/dashboard/')
+@app.route('/index')
 def index():
-    posts = Post.query.all()
-    return render_template('index.html', posts=posts, title='Home')
+    entries = Entry.query.all()
+    return render_template('index.html', entries=entries)
 
-@app.route('/add/', methods=["POST", "GET"])
-def add_post():
-    if request.method == "POST":
-        name = request.form['name']
-        desc = request.form['desc']
-        if name is not None:
-            post = Post(name=name, desc=desc)
-            db.session.add(post)
+@app.route('/add', methods=['POST', 'GET'])
+def add():
+    if request.method == 'POST':
+        form = request.form
+        title = form.get('title')
+        description = form.get('description')
+        if title != '' or description != '':
+            entry = Entry(title=title, description=description)
+            db.session.add(entry)
             db.session.commit()
-            flash("Data Posted successfully!")
-            return redirect('/dashboard')
-    return render_template('add_post.html', title='Add New')
+            return redirect('/')
+        else:
+            flash("Form wajib isi")
+            return redirect('/')
+    return "Of the Jedi"
 
-@app.route('/<int:id>/')
-def detail_post(id):
-    post = Post.query.filter_by(id=id).first()
-    return render_template('detail_post.html', title='Detail Post', post=post)
+@app.route('/update/<int:id>', methods=['POST', 'GET'])
+def update(id):
+    # if not id or id == 0:
+    entry = Entry.query.get(id)
+    if entry:
+        if request.method == 'POST':
+            entry.title = request.form['title']
+            entry.description = request.form['description']
+            db.session.commit()
+            return redirect('/')
+        return render_template('update.html', entry=entry)
     
-@app.route('/<int:id>/edit/', methods=["POST", "GET"])
-def edit_post(id):
-    post = Post.query.filter_by(id=id).first()
-    if request.method == "POST":
-        post.name = request.form['name']
-        post.desc = request.form['desc']
-        db.session.commit()
-        flash("Data Updated!")
-        return redirect(url_for('detail_post', id=post.id))
-    return render_template('edit_post.html', title='Edit Post', post=post)
+    return "of the jedi"
+"""
+@app.route('/update', methods=['POST'])
+def update():
+    if not id or id != 0:
+        entry = Entry.query.get(id)
+        if entry:
+            db.session.delete(entry)
+            db.session.commit()
+        return redirect('/')
+    
+    return 'of the jedi'
+"""
 
-@app.route('/<int:id>/delete', methods=["POST", "GET"])
-def delete_post(id):
-    post = Post.query.filter_by(id=id).first()
-    if request.method == "POST":
-        db.session.delete(post)
+def confirm_delete(entry):
+    if request.method == 'POST':
+        db.session.delete(entry)
         db.session.commit()
-        flash("Post deleted!")
-        return redirect(url_for('index'))
-    return render_template('confirm_delete.html', title='Delete Post', post=post)
+        return redirect('/')
+    return render_template('confirm_delete.html', entry=entry)
+
+@app.route('/delete/<int:id>', methods=['POST', 'GET'])
+def delete(id):
+    if not id or id != 0:
+        entry = Entry.query.get(id)
+        if entry:
+            return confirm_delete(entry)
+                
+    return "of the jedi"
+
+@app.route('/turn/<int:id>')
+def turn(id):
+    if not id or id != 0:
+        entry = Entry.query.get(id)
+        if entry:
+            entry.status = not entry.status
+            db.session.commit()
+        return redirect('/')
+    
+    return "of the jedi"
