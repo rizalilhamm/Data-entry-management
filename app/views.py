@@ -22,11 +22,10 @@ def add():
         else:
             flash("Form wajib isi")
             return redirect('/')
-    return "Of the Jedi"
+    return render_template('add.html')
 
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
-    # if not id or id == 0:
     entry = Entry.query.get(id)
     if entry:
         if request.method == 'POST':
@@ -37,23 +36,12 @@ def update(id):
         return render_template('update.html', entry=entry)
     
     return "of the jedi"
-"""
-@app.route('/update', methods=['POST'])
-def update():
-    if not id or id != 0:
-        entry = Entry.query.get(id)
-        if entry:
-            db.session.delete(entry)
-            db.session.commit()
-        return redirect('/')
-    
-    return 'of the jedi'
-"""
 
 def confirm_delete(entry):
     if request.method == 'POST':
         db.session.delete(entry)
         db.session.commit()
+        flash("Data Deleted!")
         return redirect('/')
     return render_template('confirm_delete.html', entry=entry)
 
