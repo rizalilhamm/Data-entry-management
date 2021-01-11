@@ -22,7 +22,7 @@ def add():
         else:
             flash("Form wajib isi")
             return redirect('/')
-    return render_template('add.html')
+    return render_template('add.html', title='Add Item')
 
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
@@ -33,7 +33,7 @@ def update(id):
             entry.description = request.form['description']
             db.session.commit()
             return redirect('/')
-        return render_template('update.html', entry=entry)
+        return render_template('update.html', entry=entry, title='Update')
     
     return "of the jedi"
 
@@ -43,7 +43,7 @@ def confirm_delete(entry):
         db.session.commit()
         flash("Data Deleted!")
         return redirect('/')
-    return render_template('confirm_delete.html', entry=entry)
+    return render_template('confirm_delete.html', entry=entry, title='Delete')
 
 @app.route('/delete/<int:id>', methods=['POST', 'GET'])
 def delete(id):
@@ -52,7 +52,7 @@ def delete(id):
         if entry:
             return confirm_delete(entry)
                 
-    return "of the jedi"
+    return "Delete"
 
 @app.route('/turn/<int:id>')
 def turn(id):

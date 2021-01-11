@@ -40,15 +40,15 @@
                     <td>{{ entry.description }}</td>
                     <td>
                         <a class="{{ 'btn btn-success' if entry.status 
-                                                       else 'btn btn-dark'}}"
+                                                       else 'btn btn-dark'}} btn-sm"
                            href="/turn/{{ entry.id }}">
                             Turn Status
                         </a>
-                        <a class="btn btn-info"
+                        <a class="btn btn-info btn-sm"
                            href="/update/{{ entry.id }}">
                             Edit
                         </a>
-                        <a class="btn btn-danger"
+                        <a class="btn btn-danger btn-sm"
                            href="/delete/{{ entry.id }}">
                             Delete
                         </a>
