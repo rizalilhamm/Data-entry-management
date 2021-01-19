@@ -8,6 +8,10 @@ def index():
     entries = Entry.query.all()
     return render_template('index.html', entries=entries)
 
+@app.route('/tambah')
+def lempar():
+    return redirect(url_for('add'))
+
 @app.route('/add', methods=['POST', 'GET'])
 def add():
     if request.method == 'POST':
