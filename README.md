@@ -17,7 +17,7 @@ Install the Requirements
 pip install -r requirements.txt
 ```
 
-Create Database on PostgreSQL
+Create Database in PostgreSQL
 ```bash
 CREATE DATABASE flask-crude;
 ```
@@ -26,6 +26,12 @@ Create Database Model using Python
 ```python
 from app import app, db
 db.create_all()
+```
+
+Using Migration
+```bash
+flask db migrate -m "Initial Migration"
+flask db upgdare
 ```
 
 Note: Create PostgreSQL on Heroku if you want to deploy it and set other Configuration
