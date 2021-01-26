@@ -1,6 +1,4 @@
 venv
 __pycache__
 detail.html
-ospath.py
-config.py
 test.py
