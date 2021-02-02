@@ -71,4 +71,4 @@ def register():
 def logout():
     logout_user()
     flash('Anda sudah Keluar!')
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
