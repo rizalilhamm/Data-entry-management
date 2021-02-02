@@ -1,28 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="text-center mb-3">Add New Data</h6>
-                    <form action="/add" method="post" novalidate>
-                        <div class="form-group">
-                            <input class="form-control" type="text" name="title" placeholder="Title" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="description" cols="100"
-                                      placeholder="Add a Description" required></textarea>
-                        </div>
-                        <button class="btn btn-primary" type="submit">
-                            Add
-                        </button>
-                    </form>
+    {% if current_user.is_authenticated %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="text-center mb-3">Add New Data</h6>
+                        <form action="/add" method="post" novalidate>
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="title" placeholder="Title" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" name="description" cols="100"
+                                          placeholder="Add a Description" required></textarea>
+                            </div>
+                            <button class="btn btn-primary" type="submit">
+                                Add
+                            </button> 
+                        </form>
+                    </div> 
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-6">
+    {% endif %}
+        <div class="md-2 p-3">
             <h5 class="text-center">All Data</h5>
             <table class="table table-bordered table-hover">
                 <thead>
@@ -39,22 +40,28 @@
                     <td>{{ entry.id }}</td>
                     <td><strong>{{ entry.title }}</strong></td>
                     <td>{{ entry.description }}</td>
-                    <td>
-                        <a class="{{ 'btn btn-success' if entry.status 
-                                                       else 'btn btn-dark'}} btn-sm"
-                           href="/turn/{{ entry.id }}">
-                            Turn Status
-                        </a>
-                        <a class="btn btn-info btn-sm"
-                           href="/update/{{ entry.id }}">
-                            Edit
-                        </a>
-                        <a class="btn btn-danger btn-sm"
-                           href="/delete/{{ entry.id }}">
-                            Delete
-                        </a>
-                    </td>
-                </tr>
+                    {% if current_user.is_anonymous %}
+                        <td class="text-center">
+                            <a href="{{ url_for('login') }}">Login</a> to see some Operations
+                        </td>
+                    {% else %}
+                        <td>
+                            <a class="{{ 'btn btn-success' if entry.status 
+                                                           else 'btn btn-dark'}} btn-sm"
+                               href="/turn/{{ entry.id }}">
+                                Turn Status
+                            </a>
+                            <a class="btn btn-info btn-sm"
+                               href="/update/{{ entry.id }}">
+                                Edit
+                            </a>
+                            <a class="btn btn-danger btn-sm"
+                               href="/delete/{{ entry.id }}">
+                                Delete Data
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr> 
                 {% endfor %}
                 </tbody>
 
