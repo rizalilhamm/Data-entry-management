@@ -70,4 +70,5 @@ def register():
 @login_required
 def logout():
     logout_user()
+    flash('Anda sudah Keluar!')
     return redirect(url_for('login'))
