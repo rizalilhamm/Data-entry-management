@@ -1,6 +1,9 @@
 from flask import render_template, request, redirect, flash, url_for
+from flask_login import login_required
+
 from app import app, db
 from app.models import Entry
+from app import auth
 
 @app.route('/')
 @app.route('/index')
@@ -13,6 +16,7 @@ def lempar():
     return redirect(url_for('add'))
 
 @app.route('/add', methods=['POST', 'GET'])
+@login_required
 def add():
     if request.method == 'POST':
         form = request.form
@@ -29,6 +33,7 @@ def add():
     return render_template('add.html', title='Add Item')
 
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
+@login_required
 def update(id):
     entry = Entry.query.get(id)
     if entry:
@@ -39,7 +44,7 @@ def update(id):
             return redirect('/')
         return render_template('update.html', entry=entry, title='Update')
     
-    return "of the jedi"
+    return "Update Data"
 
 def confirm_delete(entry):
     if request.method == 'POST':
@@ -50,13 +55,14 @@ def confirm_delete(entry):
     return render_template('confirm_delete.html', entry=entry, title='Delete')
 
 @app.route('/delete/<int:id>', methods=['POST', 'GET'])
+@login_required
 def delete(id):
     if not id or id != 0:
         entry = Entry.query.get(id)
         if entry:
             return confirm_delete(entry)
                 
-    return "Delete"
+    return "Delete Data"
 
 @app.route('/turn/<int:id>')
 def turn(id):
@@ -67,4 +73,4 @@ def turn(id):
             db.session.commit()
         return redirect('/')
     
-    return "of the jedi"
+    return "Turn the Button"
