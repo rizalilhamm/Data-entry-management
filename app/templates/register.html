@@ -6,26 +6,26 @@
         <form action="{{ url_for('register') }}" method="POST">
             <div class="form-group">
                 <label for="inputName">Name:</label>
-                <input type="text" name="name" class="form-control w-25" placeholder="Name" autofocus>
+                <input type="text" name="name" class="form-control w-25" placeholder="Name" autofocus required>
             </div>
             <div class="form-group">
                 <label for="inputEmail">Email:</label>
-                <input id="inputEmail" type="email" name="email" class="form-control w-25" placeholder="Email" aria-describedby="emailHep">
+                <input id="inputEmail" type="email" name="email" class="form-control w-25" placeholder="Email" aria-describedby="emailHep" required>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your Email with anyone else.</small>
             </div>
             <div class="form-group">
                 <label for="inputPassword">Password:</label>
-                <input id="inputPassword" type="password" name="password" class="form-control w-25" placeholder="Password">
+                <input id="inputPassword" type="password" name="password" class="form-control w-25" placeholder="Password" required>
             </div>
             <div class="form-group">
                 <label for="inputPassword">Confirm Password:</label>
-                <input id="inputPassword" type="password" name="confirm_password" class="form-control w-25" placeholder="Confirm Password">
+                <input id="inputPassword" type="password" name="confirm_password" class="form-control w-25" placeholder="Confirm Password" required>
             </div>
             <div class="form-check">
-                <input type="checkbox" class="form-check-input">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                <input name="is_admin" type="checkbox" class="form-check-input">
+                <small class="form-text">Register as Admin</small>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm">Login</button>
+            <button type="submit" class="btn btn-primary btn-sm">Register</button>
             <div>
                 <small class="form-text">Sudah punya Akun? <a href="{{ url_for('login') }}">Login</a> Disini</small>
             </div>

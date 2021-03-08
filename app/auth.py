@@ -29,7 +29,11 @@ def login():
         if not user or not check_password_hash(user.password, password):
             flash("Invalid Email or Password")
             return redirect(url_for('login'))
-        login_user(user, remember=remember)
+        if user.is_admin == True:
+            flash("Anda login sebagai admin.")
+        else:
+            flash("Anda login sebagai User biasa")
+        login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
@@ -47,6 +51,7 @@ def register():
     email = form.get('email')
     password = form.get('password')
     confirm_password = form.get('confirm_password')
+    is_admin = form.get('is_admin')
 
     if request.method == "POST":
         user = User.query.filter_by(email=email).first()
@@ -56,8 +61,9 @@ def register():
         elif password != confirm_password:
             flash("Password harus sama")
             return redirect(url_for('register'))
-
         new_user = User(name=name, email=email, password=generate_password_hash(password, method='sha256'))
+        if is_admin:
+            new_user.is_admin = True
         db.session.add(new_user)
         db.session.commit()
         flash("Selamat!, User sudah terdaftar.")
