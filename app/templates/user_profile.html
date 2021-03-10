@@ -3,7 +3,7 @@
 {% block content %}
     <div>
         {% if current_user.is_authenticated %}
-            Selamat Datang <b>{{ current_user.name }}</b>
+            Selamat Datang <b class="text-capitalize">{{ current_user.name }}</b>
         {% else %}
             Anda belum Login silahkan <a href="{{ url_for('login') }}">Login disini</a>
         {% endif %}

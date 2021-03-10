@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="text-center mb-3">Add New Data</h6>
-                        <form action="/add" method="post" novalidate>
+                        <form action="{{ url_for('add') }}" method="post" novalidate>
                             <div class="form-group">
                                 <input class="form-control" type="text" name="title" placeholder="Title" required>
                             </div>
@@ -16,9 +16,13 @@
                                 <textarea class="form-control" name="description" cols="100"
                                           placeholder="Add a Description" required></textarea>
                             </div>
+                            {% if current_user.is_admin %}
                             <button class="btn btn-primary" type="submit">
                                 Add
                             </button>
+                            {% else %}
+                                <p>Pemambahan hanya boleh dilakukan oleh admin saja</p>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -46,21 +50,34 @@
                             <a href="{{ url_for('login') }}">Login</a> to see some Operations
                         </td>
                     {% else %}
-                        <td>
-                            <a class="{{ 'btn btn-success' if entry.status 
-                                                           else 'btn btn-dark'}} btn-sm"
-                               href="/turn/{{ entry.id }}">
-                                Turn Status
-                            </a>
-                            <a class="btn btn-info btn-sm"
-                               href="/update/{{ entry.id }}">
-                                Edit
-                            </a>
-                            <a class="btn btn-danger btn-sm"
-                               href="/delete/{{ entry.id }}">
-                                Delete Data
-                            </a>
-                        </td>
+                        {% if current_user.is_admin %}
+                            <td>
+                                <a class="{{ 'btn btn-success' if entry.status 
+                                                               else 'btn btn-dark'}} btn-sm"
+                                   href="/turn/{{ entry.id }}">
+                                    Turn Status
+                                </a>
+                                <a class="btn btn-info btn-sm"
+                                   href="/update/{{ entry.id }}">
+                                    Edit
+                                </a>
+                                <a class="btn btn-danger btn-sm"
+                                   href="/delete/{{ entry.id }}">
+                                    Delete Data
+                                </a>
+                            </td>
+                        {% elif current_user.is_editor and not current_user.is_admin %}
+                            <td>
+                                <a class="btn btn-info btn-sm"
+                                   href="/update/{{ entry.id }}">
+                                    Edit
+                                </a>
+                            </td>
+                        {% else %}
+                            <td>
+                                <p>User biasa hanya bisa melihat data</p>
+                            </td>
+                        {% endif %}
                     {% endif %}
                 </tr> 
                 {% endfor %}

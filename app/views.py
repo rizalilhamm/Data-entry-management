@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, flash, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from app import app, db
 from app.models import Entry
@@ -18,6 +18,13 @@ def lempar():
 @app.route('/add', methods=['POST', 'GET'])
 @login_required
 def add():
+    if not current_user.is_admin:
+        flash("CRUD hanya bisa dilakukan oleh Admin")
+        return redirect(url_for('index'))
+    if not current_user.is_editor:
+        flash("Anda hanya bisa melakukan Update data saja")
+        return redirect(url_for('index'))
+
     if request.method == 'POST':
         form = request.form
         title = form.get('title')
@@ -35,6 +42,9 @@ def add():
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 @login_required
 def update(id):
+    if not current_user.is_admin and not current_user.is_editor:
+        flash("User biasa tidak CRUD")
+        return redirect(url_for('index'))
     entry = Entry.query.get(id)
     if entry:
         if request.method == 'POST':
@@ -57,6 +67,9 @@ def confirm_delete(entry):
 @app.route('/delete/<int:id>', methods=['POST', 'GET'])
 @login_required
 def delete(id):
+    if not current_user.is_admin or not current_user.is_editor:
+        flash("Hanya admin yang bisa menghapus data!")
+        return redirect(url_for('index'))
     if not id or id != 0:
         entry = Entry.query.get(id)
         if entry:
@@ -66,6 +79,9 @@ def delete(id):
 
 @app.route('/turn/<int:id>')
 def turn(id):
+    if not current_user.is_admin:
+        flash("User biasa tidak CRUD")
+        return redirect(url_for('index'))
     if not id or id != 0:
         entry = Entry.query.get(id)
         if entry:
