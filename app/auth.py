@@ -20,19 +20,22 @@ def login():
     form = request.form
     email = form.get('email')
     password = form.get('password')
-    remember = form.get('remember')
+    # remember = form.get('remember')
 
     if request.method == "POST":
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first() or User.query.filter_by(name=email).first()
 
         if not user or not check_password_hash(user.password, password):
             flash("Invalid Email or Password")
             return redirect(url_for('login'))
         if user.is_admin == True:
             flash("Anda login sebagai admin.")
+        elif user.is_editor:
+            flash("Anda login sebagai User Editor")
         else:
-            flash("Anda login sebagai User biasa")
+            flash("Anda Login sebagai user biasa")
+
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -52,6 +55,7 @@ def register():
     password = form.get('password')
     confirm_password = form.get('confirm_password')
     is_admin = form.get('is_admin')
+    is_editor = form.get('is_editor')
 
     if request.method == "POST":
         user = User.query.filter_by(email=email).first()
@@ -64,9 +68,20 @@ def register():
         new_user = User(name=name, email=email, password=generate_password_hash(password, method='sha256'))
         if is_admin:
             new_user.is_admin = True
+            new_user.is_editor = True
+        if is_editor:
+            new_user.is_editor = True
+
+        if new_user.is_admin:
+            flash("Selamat, anda terdaftar sebagai Admin")
+        elif new_user.is_editor:
+            flash("Selamat, anda terdaftar sebagai Editor")
+        else:
+            flash("Anda terdaftar sebagai User biasa")
+
         db.session.add(new_user)
         db.session.commit()
-        flash("Selamat!, User sudah terdaftar.")
+
         return redirect(url_for('login'))
 
     return render_template('register.html', title='Register')
@@ -77,4 +92,4 @@ def register():
 def logout():
     logout_user()
     flash('Anda sudah Keluar!')
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
