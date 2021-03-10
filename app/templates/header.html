@@ -25,7 +25,7 @@
             <a class="mr-2 text-dark" href="{{ url_for('register') }}">Sign Up</a>
             <a class="mr-2 btn btn-primary btn-sm" href="{{ url_for('login') }}">Login</a>
         {% else %}
-            <a href="{{ url_for('user_profile', name=current_user.name) }}">{{ current_user.name }}</a> |
+            <a class="text-capitalize" href="{{ url_for('user_profile', name=current_user.name) }}">{{ current_user.name }}</a> |
             <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
       </div>
