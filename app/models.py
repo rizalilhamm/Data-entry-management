@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     is_admin = db.Column(db.Boolean, default=False)
     is_editor = db.Column(db.Boolean, default=False)
+    about = db.Column(db.String(140))
 
     def __repr__(self):
         return self.name

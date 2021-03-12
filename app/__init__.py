@@ -17,6 +17,7 @@ login_manager.login_message = 'Login to continue.'
 from app import views
 from app.auth import login
 from app.models import User
+from app.user import user
 
 @login_manager.user_loader
 def load_user(id):

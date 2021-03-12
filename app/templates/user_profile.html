@@ -4,6 +4,14 @@
     <div>
         {% if current_user.is_authenticated %}
             Selamat Datang <b class="text-capitalize">{{ current_user.name }}</b>
+            <a href="{{ url_for('update_profile', name=current_user.name) }}"> Edit Profile</a> <br>
+            <p class="text-capitalize">About
+                {% if not current_user.about %}
+                    <a href="#">Tambah Desc</a>
+                {% else %}
+                    {{ current_user.about }}</p>
+                {% endif %}
+                </p>
         {% else %}
             Anda belum Login silahkan <a href="{{ url_for('login') }}">Login disini</a>
         {% endif %}

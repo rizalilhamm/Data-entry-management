@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        {% if current_user.is_authenticated %}
+            <form action="{{ url_for('update_profile', name=current_user.name) }}" method="POST">
+                <div class="form-group">
+                    <label for="updateName">New Name:</label> <br>
+                    <input type="text" name="name" id="updateName" value="{{ current_user.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="updateEmail">Email</label> <br>
+                    <input type="email" name="email" id="updateEmail" value="{{ current_user.email }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="updateAbout">About you:</label> <br>
+                    <input type="text" name="about" id="updateAbout" {% if current_user.about %} value="{{ current_user.about }}" {% else %} placeholder="Add about" {% endif %}>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary btn-sm mr-2">Update</button>
+                    <a>Cancel</a>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

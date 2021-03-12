@@ -20,7 +20,7 @@
           </li>
         </ul>
       {% endif %}
-      <div class="float-righ">
+      <!-- <div class="float-righ dropdown" >
         {% if current_user.is_anonymous %}
             <a class="mr-2 text-dark" href="{{ url_for('register') }}">Sign Up</a>
             <a class="mr-2 btn btn-primary btn-sm" href="{{ url_for('login') }}">Login</a>
@@ -28,6 +28,22 @@
             <a class="text-capitalize" href="{{ url_for('user_profile', name=current_user.name) }}">{{ current_user.name }}</a> |
             <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
+      </div> -->
+      <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Dropdown link
+        </a>
+        <ul class="dropdown-content list-unstyled" aria-labelledby="dropdownMenuLink">
+          {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('user_profile', name=current_user.name) }}">Profile</a></li>
+            <li><a href="#">Setting</a></li>
+            <li><a href="#">Change Password</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          {% else %}
+            <li><a href="{{ url_for('login')}}">Login</a></li>
+            <li><a href="{{ url_for('register')}}">Register</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
   </nav>
