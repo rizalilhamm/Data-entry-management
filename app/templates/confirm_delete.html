@@ -3,7 +3,7 @@
 {% block content %}
     <p class="alert alert-danger">Are you sure want to delete?</p>
     <form action="{{ url_for('delete', id=entry.id) }}" method="POST">
-        <a href="{{ url_for('index') }}">Cancel</a>
         <input type="Submit" class="btn btn-danger btn-sm" value="Delete">
+        <a href="{{ url_for('index') }}">Cancel</a>
     </form>
 {% endblock %}
