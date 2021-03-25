@@ -3,11 +3,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_required
 
 from app import app, db
+from app.models import User
 
 
 @app.route('/profile')
 def user_profile():
-    return render_template('user_profile.html')
+    """
+    Fungsi ini berjalan untuk menampilkan Profile User
+    url:
+        /profile
+    return:
+        mengembalikan templates user_profile yang diambil dari folder templates
+    """
+    name = current_user.name
+    return render_template('user_profile.html', name=name.capitalize())
 
 @app.route('/profile/update/<string:name>', methods=('POST', 'GET'))
 def update_profile(name):
@@ -16,15 +25,14 @@ def update_profile(name):
     if current_user.name != name:
         return redirect(url_for('profile/<string:name>')) 
 
-    form = request.form
-    name = form.get('name')
-    email = form.get('email')
-    about = form.get('about')
+    name = request.form.get('name')
+    email = request.form.get('email')
+    about = request.form.get('about')
     if request.method == "POST":
         current_user.name = name
         current_user.about = about
         db.session.commit()
-        flash("Profile berhasil di update")
+        flash("Profile berhasil diupdate")
         return redirect(url_for('user_profile', name=current_user.name))
     
     return render_template('update_profile.html', title='Update Profile')
@@ -43,19 +51,21 @@ def change_password():
     if request.method == "POST":
         # jika false maka ulangi
         if not check_password_hash(current_user.password, password_lama):
-            flash("Masih ada yang salah")
+            flash("Password lama yang anda masukkan salah")
             return redirect(url_for('change_password'))
         # jika field masih ada yang kosong maka ulangi
         if not password_baru or not konfirmasi_password_baru:
-            flash("Password baru/lama masih ada yang kosong")
+            flash("Kolom password lama atau password baru harus diisi")
             return redirect(url_for('change_password'))
         # jika tidak kosong kosong maka bandingkan dan commit pada server
-        if password_baru == konfirmasi_password_baru:
-            if password_lama == password_baru:
+        if password_baru and konfirmasi_password_baru:
+            if password_baru == konfirmasi_password_baru:
+                if password_lama == password_baru:
+                    flash("password anda tidak berubah")
+                    return redirect(url_for('user_profile'))
+                current_user.password = generate_password_hash(password_baru)
+                db.session.commit()
+                flash("Password sudah diperbaharui")
                 return redirect(url_for('user_profile'))
-            current_user.password = generate_password_hash(password_baru)
-            db.session.commit()
-            flash("Password sudah diperbaharui")
-            return redirect(url_for('user_profile'))
 
     return render_template('change_password.html', title='Change Password')

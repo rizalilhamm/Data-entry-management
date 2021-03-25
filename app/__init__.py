@@ -14,13 +14,16 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Login to continue.'
 
+# import module views yang berisi fungsi CRUD 
 from app import views
-from app.auth import login
-from app.models import User
+""" import module user dari folder app/user 
+    yang berisi tungsi-fungsi yang berhubungan dengan kebutuhan user"""
 from app.user import user
+
 
 @login_manager.user_loader
 def load_user(id):
+    """   Fungsi ini di jalankan untuk menyimpan cookies atau session User 
+    agar informasi login user tersimpan dalam LocalStorage import User model dari app/models.py  """
+    from app.models import User
     return User.query.get(int(id))
-
-# Tambahkan Komentar

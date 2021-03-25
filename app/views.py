@@ -26,9 +26,8 @@ def add():
         return redirect(url_for('index'))
 
     if request.method == 'POST':
-        form = request.form
-        title = form.get('title')
-        description = form.get('description')
+        title = request.form.get('title')
+        description = request.form.get('description')
         if title != '' or description != '':
             entry = Entry(title=title, description=description)
             db.session.add(entry)
@@ -76,17 +75,3 @@ def delete(id):
             return confirm_delete(entry)
                 
     return "Delete Data"
-
-@app.route('/turn/<int:id>')
-def turn(id):
-    if not current_user.is_admin:
-        flash("User biasa tidak CRUD")
-        return redirect(url_for('index'))
-    if not id or id != 0:
-        entry = Entry.query.get(id)
-        if entry:
-            entry.status = not entry.status
-            db.session.commit()
-        return redirect('/')
-    
-    return "Turn the Button"

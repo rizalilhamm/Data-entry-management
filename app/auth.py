@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
-from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, login_required, logout_user
 
@@ -17,16 +16,15 @@ def login():
         flash('Currently you are logging in')
         return redirect(url_for('index'))
     
-    form = request.form
-    email = form.get('email')
-    password = form.get('password')
+    email = request.form.get('email')
+    password = request.form.get('password')
     # remember = form.get('remember')
 
     if request.method == "POST":
 
         user = User.query.filter_by(email=email).first() or User.query.filter_by(name=email).first()
 
-        if not user or not check_password_hash(user.password, password):
+        if not user or not user.check_password(password):
             flash("Invalid Email or Password")
             return redirect(url_for('login'))
         if user.is_admin == True:
@@ -49,13 +47,12 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
-    form = request.form
-    name = form.get('name')
-    email = form.get('email')
-    password = form.get('password')
-    confirm_password = form.get('confirm_password')
-    is_admin = form.get('is_admin')
-    is_editor = form.get('is_editor')
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+    is_admin = request.form.get('is_admin')
+    is_editor = request.form.get('is_editor')
 
     if request.method == "POST":
         user = User.query.filter_by(email=email).first()
@@ -65,10 +62,10 @@ def register():
         elif password != confirm_password:
             flash("Password harus sama")
             return redirect(url_for('register'))
-        new_user = User(name=name, email=email, password=generate_password_hash(password, method='sha256'))
+        new_user = User(name=name, email=email, password=password)
+        new_user.hash_password()
         if is_admin:
-            new_user.is_admin = True
-            new_user.is_editor = True
+            new_user.is_admin, new_user.is_editor = True, True
         if is_editor:
             new_user.is_editor = True
 
