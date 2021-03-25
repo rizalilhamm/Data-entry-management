@@ -18,7 +18,7 @@ login_manager.login_message = 'Login to continue.'
 from app import views
 """ import module user dari folder app/user 
     yang berisi tungsi-fungsi yang berhubungan dengan kebutuhan user"""
-from app.user import user
+from app.user_controller import user_controller
 
 
 @login_manager.user_loader

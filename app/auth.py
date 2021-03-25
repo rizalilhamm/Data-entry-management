@@ -6,10 +6,6 @@ from app import app, db
 from app import views
 from app.models import User
 
-# @app.route('/<string:name>')
-# def user_profile(name):
-#     return render_template('user_profile.html', name=name, title=name)
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:

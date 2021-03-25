@@ -5,16 +5,13 @@ from flask_login import current_user, login_required
 from app import app, db
 from app.models import User
 
-
 @app.route('/profile')
 def user_profile():
-    """
-    Fungsi ini berjalan untuk menampilkan Profile User
-    url:
-        /profile
-    return:
-        mengembalikan templates user_profile yang diambil dari folder templates
-    """
+    """ Fungsi ini berjalan untuk menampilkan Profile User
+        url:
+            /profile
+        return:
+            mengembalikan templates user_profile yang diambil dari folder templates """
     name = current_user.name
     return render_template('user_profile.html', name=name.capitalize())
 
