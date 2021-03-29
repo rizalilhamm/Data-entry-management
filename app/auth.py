@@ -28,8 +28,7 @@ def login():
         elif user.is_editor:
             flash("Anda login sebagai User Editor")
         else:
-            flash("Anda Login sebagai user biasa")
-
+            flash("Anda Login sebagai user biasa")        
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':

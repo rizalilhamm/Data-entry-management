@@ -6,6 +6,7 @@ from app import app, db
 from app.models import User
 
 @app.route('/profile')
+@login_required
 def user_profile():
     """ Fungsi ini berjalan untuk menampilkan Profile User
         url:
