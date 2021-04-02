@@ -3,4 +3,3 @@ __pycache__
 .flaskenv
 app.db
 catatan.txt
-!.vscode/*
