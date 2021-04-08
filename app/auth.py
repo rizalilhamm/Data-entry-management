@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, login_required, logout_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import app, db
 from app import views
@@ -77,7 +78,6 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html', title='Register')
-
 
 @app.route('/logout')
 @login_required
