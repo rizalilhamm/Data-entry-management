@@ -1,5 +1,6 @@
 import os
 import jwt
+import re
 import smtplib, ssl
 from flask import request, render_template, url_for, flash, redirect
 from app import app, mail, db
@@ -29,6 +30,14 @@ def send_reset_email(mail_receiver):
         server.login(mail_sender, mail_password)
         server.sendmail(mail_sender, mail_receiver, msg)
 
+def validate_email(email):
+    regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+    if not (re.search(regex, email)):
+        flash("Invalid Email Format")
+        return False
+        
+    return True
+
 @app.route('/reset-request', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
@@ -41,7 +50,7 @@ def reset_request():
             flash("Field empty")
             return reload_url
         if mail_receiver:
-            if '@' not in mail_receiver:
+            if validate_email(mail_receiver) is False:
                 flash("Invalid email")
                 return reload_url
             if user:
@@ -55,7 +64,7 @@ def reset_request():
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-        
+    
     user = User.verify_reset_token(token)
     if user is None:
         flash("Invalid signature or expires token")
