@@ -21,7 +21,15 @@ class User(UserMixin, db.Model):
     about = db.Column(db.String(140)) # user dapat menambahkan bio atau mengkosongkannya
     
     def get_reset_token(self):
-        # Membuat tanda tangan digital
+        """
+        Membuat tanda tangan digital sebagai identitas pribadi user
+        params:
+            id(int): user id
+            name(string): user name
+            email(string): user email
+        
+        return value:
+                token(string): user signature """
         token = jwt.encode({
             'id': self.id,
             'name': self.name,
@@ -31,17 +39,34 @@ class User(UserMixin, db.Model):
     
     @staticmethod
     def verify_reset_token(token):
-        try:    
-            # periksa tanda tangan digital
+        """ Verifikasi bahwa token yang diberikan memiliki data
+            yang sesuai di dalam database
+            
+            params:
+                token(string): User Signature
+            return:
+                user(objext): object user """
+        try:
             signature = jwt.decode(token, os.getenv('SECRET_KEY'), algorithms=["HS256"])
         except:
             return None
         return User.query.filter_by(email=signature['email']).first()
 
     def hash_password(self):
+        """ Lakukan hashing pada password yang diberikan 
+            params:
+                password(string): user password
+            return:
+                hashed_password: random string """
         self.password = generate_password_hash(self.password, method='sha256')
         
     def check_password(self, password):
+        """ Lakukan check hashing atau decode pada password yang diberikan
+            dan menyesuaikan dengan neggunakan algorithm hashing password 
+            params:
+                password(string): user password
+            return:
+                password(boolen): True or False """
         return check_password_hash(self.password, password)
 
     def __repr__(self):

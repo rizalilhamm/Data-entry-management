@@ -9,8 +9,14 @@ from flask_login import current_user
 from flask_mail import Message
 import datetime
 
-# Membuat fungsi user bisa meminta untuk reset password
+
 def send_reset_email(mail_receiver):
+    """ Fungsi yang dijalankan untuk mengirimkan token random kepada pengguna yang terdaftar dengan email yang valid,
+
+        params:
+            mail_receiver(string): email penerima token
+        return:
+            token(string) dan dikirimkan ke email yang dimasukkan jika valid """
     token = jwt.encode({
         "email": mail_receiver,
     }, os.getenv('SECRET_KEY'), algorithm="HS256")
@@ -31,28 +37,41 @@ def send_reset_email(mail_receiver):
         server.sendmail(mail_sender, mail_receiver, msg)
 
 def validate_email(email):
+    """ Validasi apakan string yang dimasukkan menggunakan struktur email yang valid
+        return:
+            True or False """
     regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
     if not (re.search(regex, email)):
         flash("Invalid Email Format")
         return False
-        
     return True
+
 
 @app.route('/reset-request', methods=['GET', 'POST'])
 def reset_request():
+    """Lakukan reset password ketika user masuk dengan token yang valid dan belum expired
+        dan kemudian disimpan ke server
+    
+        return:
+            HTTP 200 if everything Ok
+            url: 127.0.0.1:5000/login """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     mail_receiver = request.form.get('email_reset_password')
+    
     if request.method == 'POST':
         reload_url = redirect(url_for('reset_request'))
         user = User.query.filter_by(email=mail_receiver).first()
+    
         if not mail_receiver:
             flash("Field empty")
             return reload_url
+    
         if mail_receiver:
             if validate_email(mail_receiver) is False:
                 flash("Invalid email")
                 return reload_url
+    
             if user:
                 send_reset_email(mail_receiver)
         flash("Check your email to reset the password")
@@ -62,6 +81,12 @@ def reset_request():
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    """ Create new password
+        params:
+            password(string): user new_password
+            konfirmasi_password(string): konfirmasi new password
+        return:
+            password(string): user new password """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     
@@ -70,9 +95,10 @@ def reset_password(token):
         flash("Invalid signature or expires token")
         return redirect(url_for('reset_request'))
     
-    password = request.form.get('new_password')
-    confirm_password = request.form.get('confirm_new_password')
     if request.method == 'POST':
+        password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_new_password')
+        
         user.password = password
         user.hash_password()
         db.session.commit()

@@ -22,10 +22,13 @@
                 <input id="inputPassword" type="password" name="confirm_password" placeholder="Confirm Password" required>
             </div>
             <div>
-                <input name="is_admin" type="checkbox">
-                <small>Register as Admin</small>
-                <input name="is_editor" sm-1 type="checkbox">
-                <small>Register as Editor</small>
+                <label for="userType">Register as:</label>
+                <input name="user_type" type="text" list="types">
+                <datalist id="types">
+                    <option>User</option>
+                    <option>Admin</option>
+                    <option>Editor</option>
+                </datalist>
             </div>
             <button type="submit">Register</button>
             <div>

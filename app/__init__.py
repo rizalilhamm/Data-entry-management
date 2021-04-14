@@ -16,17 +16,22 @@ login_manager.login_message = 'Silahkan login dulu untuk mengakses halaman'
 app.config.from_object(MailConfig)
 mail = Mail(app)
 
-# import module views yang berisi fungsi CRUD 
+# import module views yang berisi fungsi CRUD
+from app.models import User
 from app import views
+
 """ import module user dari folder app/user 
     yang berisi tungsi-fungsi yang berhubungan dengan kebutuhan user"""
 from app.user_controller import user_controller
 from app.password_reset import password_reset
 
-
 @login_manager.user_loader
 def load_user(id):
-    """   Fungsi ini di jalankan untuk menyimpan cookies atau session User 
-    agar informasi login user tersimpan dalam LocalStorage import User model dari app/models.py  """
-    from app.models import User
+    """ Fungsi ini di jalankan untuk menyimpan cookies atau session User 
+        agar informasi login user tersimpan dalam LocalStorage import User model dari app/models.py
+        params:
+           id(int): id user  
+        return:
+            user(object): object user
+        """
     return User.query.get(int(id))
