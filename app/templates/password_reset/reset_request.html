@@ -2,7 +2,7 @@
 
 {% block content %}
     <div>
-        <form action="{{ url_for('reset_request') }}" method="POST">
+        <form action="{{ url_for('reset_request') }}" method="POST" novalidate>
             <div class="form-group">
                 <label for="inputEmail">Your email:</label> <br>
                 <input type="email" name="email_reset_password" class="form-control w-25" placeholder="Email">

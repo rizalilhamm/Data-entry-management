@@ -1,16 +1,9 @@
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 import jwt
+from flask_login import UserMixin
 from app import db, app
-class Entry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64), index=True, nullable=False)
-    description = db.Column(db.String(120), index=True, nullable=False)
-    status = db.Column(db.Boolean, default=False)
 
-    def __repr__(self):
-        return self.title
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True) # berfungsi untuk menyimpan ID user dan menjadikannya kunci utama
     name = db.Column(db.String(20), index=True, nullable=False, unique=True) # menyimpan nama user

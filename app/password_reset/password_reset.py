@@ -38,6 +38,8 @@ def send_reset_email(mail_receiver):
 
 def validate_email(email):
     """ Validasi apakan string yang dimasukkan menggunakan struktur email yang valid
+        params:
+            email(string): user email
         return:
             True or False """
     regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
@@ -69,7 +71,6 @@ def reset_request():
     
         if mail_receiver:
             if validate_email(mail_receiver) is False:
-                flash("Invalid email")
                 return reload_url
     
             if user:

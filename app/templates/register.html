@@ -3,7 +3,7 @@
 {% block content%}
     <div>
         <h3>Register Form</h3>
-        <form action="{{ url_for('register') }}" method="POST">
+        <form action="{{ url_for('register') }}" method="POST" novalidate>
             <div>
                 <label for="inputName">Name:</label><br>
                 <input type="text" name="name" placeholder="Name" autofocus required>

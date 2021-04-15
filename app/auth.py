@@ -11,7 +11,7 @@ from app.models import User
 def validate_email(email):
     regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
     if not (re.search(regex, email)):
-        flash("Invalid Emial Format")
+        flash("Invalid Email Format")
         return False
     return True
 
@@ -52,6 +52,7 @@ def login():
 
     return render_template('login.html', title='Login')
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -59,9 +60,10 @@ def register():
 
     if request.method == "POST":
         name = request.form.get('name')
+        email = request.form.get('email')
         if validate_email(email) is False:
             return redirect(url_for('register'))
-        email = request.form.get('email')
+            
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         user_type = request.form.get('user_type')
@@ -94,6 +96,7 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html', title='Register')
+
 
 @app.route('/logout')
 @login_required
