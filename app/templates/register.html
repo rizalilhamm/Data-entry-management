@@ -3,31 +3,34 @@
 {% block content%}
     <div>
         <h3>Register Form</h3>
-        <form action="{{ url_for('register') }}" method="POST">
-            <div class="form-group">
-                <label for="inputName">Name:</label>
-                <input type="text" name="name" class="form-control w-25" placeholder="Name" autofocus required>
+        <form action="{{ url_for('register') }}" method="POST" novalidate>
+            <div>
+                <label for="inputName">Name:</label><br>
+                <input type="text" name="name" placeholder="Name" autofocus required>
             </div>
-            <div class="form-group">
-                <label for="inputEmail">Email:</label>
-                <input id="inputEmail" type="email" name="email" class="form-control w-25" placeholder="Email" aria-describedby="emailHep" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your Email with anyone else.</small>
+            <div>
+                <label for="inputEmail">Email:</label><br>
+                <input id="inputEmail" type="email" name="email" placeholder="Email" aria-describedby="emailHep" required><br>
+                <small id="emailHelp" class="emailHelp">We'll never share your Email with anyone else.</small>
             </div>
-            <div class="form-group">
-                <label for="inputPassword">Password:</label>
+            <div>
+                <label for="inputPassword">Password:</label><br>
                 <input id="inputPassword" type="password" name="password" class="form-control w-25" placeholder="Password" required>
             </div>
-            <div class="form-group">
-                <label for="inputPassword">Confirm Password:</label>
-                <input id="inputPassword" type="password" name="confirm_password" class="form-control w-25" placeholder="Confirm Password" required>
+            <div>
+                <label for="inputPassword">Confirm Password:</label><br>
+                <input id="inputPassword" type="password" name="confirm_password" placeholder="Confirm Password" required>
             </div>
-            <div class="form-check">
-                <input name="is_admin" type="checkbox" class="form-check-input">
-                <small class="form-text">Register as Admin</small>
-                <input name="is_editor" sm-1 type="checkbox" class="form-check-input">
-                <small class="form-text">Register as Editor</small>
+            <div>
+                <label for="userType">Register as:</label>
+                <input name="user_type" type="text" list="types">
+                <datalist id="types">
+                    <option>User</option>
+                    <option>Admin</option>
+                    <option>Editor</option>
+                </datalist>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm">Register</button>
+            <button type="submit">Register</button>
             <div>
                 <small class="form-text">Sudah punya Akun? <a href="{{ url_for('login') }}">Login</a> Disini</small>
             </div>

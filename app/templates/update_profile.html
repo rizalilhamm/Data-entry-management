@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        {% if current_user.is_authenticated %}
+            <form action="{{ url_for('update_profile', name=current_user.name) }}" method="POST">
+                <div>
+                    <img src="https://media-exp1.licdn.com/dms/image/C5603AQGe4Rm0q8DIOQ/profile-displayphoto-shrink_200_200/0/1615179368808?e=1622073600&v=beta&t=BXVOjTTExeyviWMn-MFctPBMDAMjm-xyUZvdGNWLPTI" alt="Rizal Ilham" width="88"> <br>
+                    <input type="file" value="Select image" >
+                </div>
+                <div>
+                    <label for="updateName">New Name:</label> <br>
+                    <input type="text" name="name" id="updateName" value="{{ current_user.name }}">
+                </div>
+                <div>
+                    <label for="updateEmail">Email:</label> <br>
+                    <input type="email" name="email" id="updateEmail" value="{{ current_user.email }}" disabled> <br>
+                    <small style="color: grey;">Email tidak dapat diubah</small>
+                </div>
+                <div>
+                    <label for="updateAbout">About you:</label> <br>
+                    <input type="text" name="about" id="updateAbout" {% if current_user.about %} value="{{ current_user.about }}" {% else %} placeholder="Add about" {% endif %}>
+                </div>
+                <div>
+                    <button type="submit">Update:</button>
+                    <a href="{{ url_for('user_profile', name=current_user.name) }}">Cancel</a>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

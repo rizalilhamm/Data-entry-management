@@ -52,19 +52,14 @@
                     {% else %}
                         {% if current_user.is_admin %}
                             <td>
-                                <a class="{{ 'btn btn-success' if entry.status 
-                                                               else 'btn btn-dark'}} btn-sm"
-                                   href="/turn/{{ entry.id }}">
-                                    Turn Status
-                                </a>
                                 <a class="btn btn-info btn-sm"
                                    href="/update/{{ entry.id }}">
                                     Edit
-                                </a>
+                                </a> |
                                 <a class="btn btn-danger btn-sm"
                                    href="/delete/{{ entry.id }}">
                                     Delete Data
-                                </a>
+                                </a> 
                             </td>
                         {% elif current_user.is_editor and not current_user.is_admin %}
                             <td>
