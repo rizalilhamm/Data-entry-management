@@ -1,5 +1,5 @@
-# CRUD App using Flask Python
-This Flask CRUD App is Running on Heroku and use PostgreSQL as Database Management System
+# DATA ENTRY MANAGEMENT
+This App is Deployed to Heroku and use PostgreSQL as Database Management System
 
 ## Installation
 First Clone the Repository
@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 Create Database in PostgreSQL
 ```bash
-CREATE DATABASE flask-crude;
+CREATE DATABASE data-entry-management;
 ```
 
 Create Database Model using Python
