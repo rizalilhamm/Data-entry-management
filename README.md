@@ -4,7 +4,7 @@ This App is Deployed to Heroku and use PostgreSQL as Database Management System
 ## Installation
 First Clone the Repository
 ```bash
-git clone https://github.com/rizalilhamm/flask-crude.git
+git clone https://github.com/rizalilhamm/Data-entry-management.git
 ```
 
 Create Virtual environment
